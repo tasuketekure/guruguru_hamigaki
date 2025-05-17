@@ -58,5 +58,12 @@
     <source src="bgm.mp3" type="audio/mpeg">
   </audio>
   <div id="stampContainer"></div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log("Service Worker registered"));
+  }
+</script>
 </body>
 </html>
