@@ -5,12 +5,14 @@ let timeLeft = 180;
 function startTimer() {
   clearInterval(timer);
   timeLeft = 180;
+  document.getElementById("guruImage").src = "guru_brushing.png";
   updateTimer();
   timer = setInterval(() => {
     timeLeft--;
     updateTimer();
     if (timeLeft <= 0) {
       clearInterval(timer);
+      document.getElementById("guruImage").src = "guru_start.png";
       document.getElementById("quote").innerText = "……えらいね……";
       updateStamps();
       notify();
@@ -69,6 +71,15 @@ function checkNotifyTime() {
   if (!h) return;
   if (parseInt(h) === now.getHours() && parseInt(m) === now.getMinutes()) {
     notify();
+  }
+}
+
+function toggleBGM() {
+  const bgm = document.getElementById("bgm");
+  if (bgm.paused) {
+    bgm.play();
+  } else {
+    bgm.pause();
   }
 }
 
