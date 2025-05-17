@@ -1,0 +1,14 @@
+
+{
+  "name": "ぐるぐるのはみがきルーム",
+  "short_name": "はみがき",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "ぐるぐると一緒に歯を磨こう",
+  "icons": [{
+    "src": "guruguru_icon.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }]
+}
