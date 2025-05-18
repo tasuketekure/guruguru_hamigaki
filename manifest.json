@@ -7,9 +7,16 @@
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "description": "ぐるぐると一緒に歯を磨こう",
-  "icons": [{
-    "src": "guruguru_icon.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }]
+  "icons": [
+    {
+      "src": "guruguru_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "guruguru_icon_1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
 }
