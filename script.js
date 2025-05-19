@@ -2,10 +2,14 @@
 let timer;
 let timeLeft = 180;
 
+const dayIndex = new Date().getDate() % 10;
+const quotes = [['……きょうも、やる……の……？', '……あわ、たくさん……', '……もうすこし、がんばる……', '……ぴかぴか、だね……'], ['……また……はみがき、か……', '……うえの歯、しっかり……', '……したの歯も……', '……すっきり、した……？'], ['……くちのなか……変な感じ……', '……がんばってる、ね……', '……あと1分、えらい……', '……きょうも、えらかった……'], ['……この音……ちょっときらい……', '……うえの奥……わすれないで……', '……あとちょっと……', '……うん、いい感じ……'], ['……なにか忘れてない……？', '……奥歯、むずかしいね……', '……あとすこし……ふぅ……', '……おつかれさま……'], ['……きょうはちゃんと……', '……ていねいに、ゆっくり……', '……急がなくていいよ……', '……うん、ばっちり……'], ['……むしば……やだな……', '……ぜったい防ぐ……', '……ねばってる……', '……がんばった、よね……？'], ['……ぼくも、いっしょに……', '……しゃかしゃか……', '……あとすこし、ファイト……', '……えへへ……'], ['……また、あしたも……', '……えらい……えらいよ……', '……あとちょっとだけ……', '……すてきな歯……'], ['……ここだけの話……歯ブラシすき……', '……ごしごし……', '……泡の匂い……好きかも……', '……ぐるぐるも、がんばったよ……']][dayIndex];
+
 function startTimer() {
   clearInterval(timer);
   timeLeft = 180;
   document.getElementById("guruImage").src = "guru_brushing.png";
+  document.getElementById("quote").innerText = quotes[0];
   updateTimer();
   timer = setInterval(() => {
     timeLeft--;
@@ -13,7 +17,7 @@ function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       document.getElementById("guruImage").src = "guru_start.png";
-      document.getElementById("quote").innerText = "……えらいね……";
+      document.getElementById("quote").innerText = quotes[3];
       updateStamps();
       notify();
     }
@@ -24,8 +28,8 @@ function updateTimer() {
   const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
   const seconds = String(timeLeft % 60).padStart(2, '0');
   document.getElementById("timerDisplay").innerText = `${minutes}:${seconds}`;
-  if (timeLeft === 120) document.getElementById("quote").innerText = "……あと、すこし……";
-  if (timeLeft === 60) document.getElementById("quote").innerText = "……がんばってる、ね……";
+  if (timeLeft === 120) document.getElementById("quote").innerText = quotes[1];
+  if (timeLeft === 60) document.getElementById("quote").innerText = quotes[2];
 }
 
 function updateStamps() {
