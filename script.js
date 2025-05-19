@@ -53,16 +53,18 @@ function renderStamps() {
 }
 
 
+
 function getTodayKey() {
-  const current = getTodayKey();
+  const now = new Date();
+  now.setHours(now.getHours() + 9);
   if (now.getHours() < 4) now.setDate(now.getDate() - 1);
-  return now.toISOString().split('T')[0];
+  return now.toISOString().split("T")[0];
 }
+
 
 function updateCalendar() {
 
   const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
-  console.log("Calendar contents:", calendar);
   const current = getTodayKey();
   
   if (!calendar.includes(current)) {
@@ -74,7 +76,6 @@ function updateCalendar() {
 
 function renderCalendar() {
   const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
-  console.log("Calendar contents:", calendar);
   const container = document.getElementById("calendarContainer");
   container.innerHTML = "";
 
