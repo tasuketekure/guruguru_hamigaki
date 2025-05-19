@@ -62,6 +62,7 @@ function getTodayKey() {
 function updateCalendar() {
 
   const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
+  console.log("Calendar contents:", calendar);
   const current = getTodayKey();
   
   if (!calendar.includes(current)) {
@@ -73,6 +74,7 @@ function updateCalendar() {
 
 function renderCalendar() {
   const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
+  console.log("Calendar contents:", calendar);
   const container = document.getElementById("calendarContainer");
   container.innerHTML = "";
 
