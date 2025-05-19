@@ -90,3 +90,49 @@ function toggleBGM() {
 
 setInterval(checkNotifyTime, 60000);
 renderStamps();
+
+
+function updateCalendar() {
+  const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
+  const today = new Date();
+  const current = today.toISOString().split('T')[0];
+  if (!calendar.includes(current)) {
+    calendar.push(current);
+    localStorage.setItem("guruCalendar", JSON.stringify(calendar));
+  }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
+  const container = document.getElementById("calendarContainer");
+  container.innerHTML = "";
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const lastDay = new Date(year, month + 1, 0).getDate();
+
+  for (let d = 1; d <= lastDay; d++) {
+    const dateStr = new Date(year, month, d).toISOString().split('T')[0];
+    const cell = document.createElement("div");
+    cell.style.display = "inline-block";
+    cell.style.width = "60px";
+    cell.style.height = "60px";
+    cell.style.margin = "4px";
+    cell.style.textAlign = "center";
+    cell.style.verticalAlign = "top";
+    cell.style.border = "1px solid #ccc";
+    cell.innerHTML = `<div style="font-size:12px">${d}</div>`;
+    if (calendar.includes(dateStr)) {
+      const img = document.createElement("img");
+      img.src = "stamp.png";
+      img.style.width = "40px";
+      img.style.height = "40px";
+      cell.appendChild(img);
+    }
+    container.appendChild(cell);
+  }
+}
+
+updateCalendar();
