@@ -36,7 +36,7 @@ function updateStamps() {
   let stamps = parseInt(localStorage.getItem("guruStamps") || "0");
   stamps++;
   localStorage.setItem("guruStamps", stamps);
-  renderStamps();
+  
   document.getElementById("stampSound").play();
   updateCalendar();
 }
@@ -52,11 +52,18 @@ function renderStamps() {
   }
 }
 
+
+function getTodayKey() {
+  const current = getTodayKey();
+  if (now.getHours() < 4) now.setDate(now.getDate() - 1);
+  return now.toISOString().split('T')[0];
+}
+
 function updateCalendar() {
+
   const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
-  const now = new Date();
-  now.setHours(now.getHours() + 9);
-  const current = now.toISOString().split('T')[0];
+  const current = getTodayKey();
+  
   if (!calendar.includes(current)) {
     calendar.push(current);
     localStorage.setItem("guruCalendar", JSON.stringify(calendar));
@@ -135,5 +142,5 @@ function toggleBGM() {
 }
 
 setInterval(checkNotifyTime, 60000);
-renderStamps();
+
 renderCalendar();
