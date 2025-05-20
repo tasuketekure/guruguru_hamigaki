@@ -1,44 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ぐるぐるはみがき</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      background-color: #fff;
-      margin: 0;
-      padding: 20px;
-    }
-    img {
-      max-width: 80vw;
-      height: auto;
-    }
-    button {
-      margin: 10px;
-      font-size: 18px;
-      padding: 10px 20px;
-    }
-    audio {
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ぐるぐるのはみがきルーム</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>ぐるぐるはみがき</h1>
-  <img id="brushImage" src="guru_brushing.png" alt="ぐるぐる歯みがき" />
-  <div>
-    <button onclick="startTimer()">タイマー開始</button>
-    <button onclick="toggleBgm()">BGMオン/オフ</button>
-  </div>
-  <div>
-    <input type="date" id="date" />
-    <button onclick="submitStamp()">スタンプを押す！</button>
-  </div>
-  <audio id="bgm" src="bgm.mp3" loop></audio>
-  <script src="script.js"></script>
+<h1>ぐるぐるのはみがきルーム</h1>
+
+<img id="guruImage" src="guru_brushing.png" alt="ぐるぐる">
+
+<div id="timerDisplay">03:00</div>
+<button id="startButton">はみがきをはじめる</button>
+<div id="quote">……きょうも、やるの……？</div>
+
+<br>
+
+<button id="toggleBGM">BGM オン／オフ</button>
+<audio id="bgm" loop src="bgm.mp3"></audio>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,34 +1,48 @@
+const brushingImg = 'guru_brushing.png';
+const startImg = 'guru_start.png';
 
-let timer;
-function startTimer() {
-  const button = document.querySelector("button");
-  button.disabled = true;
-  setTimeout(() => {
-    alert("3分経ったよ！");
-    button.disabled = false;
-  }, 180000);
+const img = document.getElementById('guruImage');
+const timerDisplay = document.getElementById('timerDisplay');
+const startButton = document.getElementById('startButton');
+const quote = document.getElementById('quote');
+const bgm = document.getElementById('bgm');
+const toggleBGM = document.getElementById('toggleBGM');
+
+let timerId = null;
+
+function formatTime(sec){
+  const m = String(Math.floor(sec/60)).padStart(2,'0');
+  const s = String(sec%60).padStart(2,'0');
+  return `${m}:${s}`;
 }
 
-function toggleBgm() {
-  const bgm = document.getElementById("bgm");
-  if (bgm.paused) {
+function startTimer(){
+  if(timerId) return; // already running
+  let remaining = 180;
+  img.src = startImg;
+  timerDisplay.textContent = formatTime(remaining);
+  quote.textContent = 'はみがきスタートだよ……！';
+  timerId = setInterval(()=>{
+    remaining--;
+    timerDisplay.textContent = formatTime(remaining);
+    if(remaining<=0){
+      clearInterval(timerId);
+      timerId=null;
+      img.src = brushingImg;
+      quote.textContent = 'おつかれさま……よくがんばったね……？';
+    }
+  },1000);
+}
+
+function toggleMusic(){
+  if(bgm.paused){
     bgm.play();
-  } else {
+    toggleBGM.textContent = 'BGM オフ';
+  }else{
     bgm.pause();
+    toggleBGM.textContent = 'BGM オン';
   }
 }
 
-function submitStamp() {
-  const date = document.getElementById("date").value;
-  if (!date) {
-    alert("日付を選んでね");
-    return;
-  }
-  fetch("https://script.google.com/macros/s/AKfycbzB9xMnBZXH-QIfrnawMtrRWYHM-MoB4Y0GeOBEpm3P1I79o0uAlg5yDuH2CYGeu4uS/exec", {
-    method: "POST",
-    body: new URLSearchParams({ date })
-  })
-  .then(res => res.text())
-  .then(text => alert("スタンプ送信完了！"))
-  .catch(err => alert("エラーが発生しました"));
-}
+startButton.addEventListener('click', startTimer);
+toggleBGM.addEventListener('click', toggleMusic);
