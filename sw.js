@@ -1,5 +1,7 @@
-
-self.addEventListener("install", function(event) {
-  console.log("Service Worker installed");
+self.addEventListener('push', event => {
+  const data = event.data.json();
+  self.registration.showNotification(data.title, {
+    body: data.body,
+    icon: data.icon
+  });
 });
-self.addEventListener("fetch", function(event) {});
