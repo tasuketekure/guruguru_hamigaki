@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>ぐるぐるはみがきスタンプ</title>
+  <title>ぐるぐるはみがき</title>
 </head>
 <body>
-  <h1>ぐるぐるはみがきスタンプ</h1>
-  <input type="date" id="stamp-date">
-  <button id="stamp-button">スタンプを押す！</button>
-  <p id="status"></p>
-  <script src="stamp.js"></script>
+  <h1>ぐるぐるはみがきアプリ</h1>
+  <button onclick="startBrushing()">はみがきスタート</button>
+  <button onclick="stopBrushing()">終了</button>
+  <audio id="bgm" loop>
+    <source src="bgm.mp3" type="audio/mp3">
+  </audio>
+  <img src="guru_start.png" id="guru" width="300">
+
+  <h2>ぐるぐるはみがきスタンプ</h2>
+  <input type="date" id="stampDate">
+  <button onclick="sendStamp()">スタンプを押す！</button>
+
+  <script src="script.js"></script>
 </body>
 </html>
