@@ -1,9 +1,7 @@
-self.addEventListener('push', function(event) {
-  const data = event.data.json();
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: './guru_icon.png'
-    })
-  );
+self.addEventListener('push', e => {
+  const data = e.data.json();
+  self.registration.showNotification(data.title, {
+    body: data.body,
+    icon: 'guru_icon.png'
+  });
 });
