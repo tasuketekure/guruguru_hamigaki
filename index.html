@@ -39,5 +39,16 @@
       navigator.serviceWorker.register('sw.js').then(() => console.log("Service Worker registered"));
     }
   </script>
+
+<hr>
+<h2>スタンプ登録（好きな日付を選んでね）</h2>
+<input type="date" id="stampDate" />
+<button onclick="submitStamp()">スタンプを押す！</button>
+<audio id="stampSound" src="stamp_sound.mp3"></audio>
+
+<h2>通知設定</h2>
+<button id="notifyToggle" onclick="toggleNotification()">通知: 未設定</button>
+
+<script src="custom_addon.js"></script>
 </body>
 </html>
