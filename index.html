@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ぐるぐるのはみがきルーム</title>
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ぐるぐるはみがき</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #fff;
+      text-align: center;
+    }
+    #guruImage {
+      width: 80%;
+      max-width: 300px;
+      margin-top: 20px;
+    }
+    #controls {
+      margin: 20px;
+    }
+    button {
+      padding: 10px;
+      font-size: 1em;
+      margin: 10px;
+    }
+  </style>
 </head>
 <body>
-<h1>ぐるぐるのはみがきルーム</h1>
-
-<img id="guruImage" src="guru_brushing.png" alt="ぐるぐる">
-
-<div id="timerDisplay">03:00</div>
-<button id="startButton">はみがきをはじめる</button>
-<div id="quote">……きょうも、やるの……？</div>
-
-<br>
-
-<button id="toggleBGM">BGM オン／オフ</button>
-<audio id="bgm" loop src="bgm.mp3"></audio>
-
-<script src="script.js"></script>
+  <h1>ぐるぐるはみがき</h1>
+  <img id="guruImage" src="guru_start.png" alt="ぐるぐる">
+  <div id="controls">
+    <button onclick="startBrushing()">タイマーを押す！</button>
+    <button onclick="toggleBgm()">BGMオン/オフ</button>
+  </div>
+  <audio id="bgm" loop>
+    <source src="bgm.mp3" type="audio/mp3">
+  </audio>
+  <script src="script.js"></script>
 </body>
 </html>
