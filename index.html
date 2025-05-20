@@ -1,42 +1,51 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ぐるぐるのはみがきルーム</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="guruguru_icon.png" />
-  <style>
-    body { font-family: "メイリオ", sans-serif; background: #f0f0f0; text-align: center; padding: 2rem; }
-    #guruImage { max-width: 80%; height: auto; }
-    #timerDisplay { font-size: 2rem; margin: 1rem 0; }
-    #quote { margin-top: 1rem; font-size: 1.2rem; color: #555; }
-    #stampContainer { margin-top: 2rem; display: grid; grid-template-columns: repeat(5, 50px); gap: 10px; justify-content: center; }
-    .stamp { width: 50px; height: 50px; background-image: url('stamp.png'); background-size: contain; }
-  </style>
+  <meta charset="UTF-8">
+  <title>ぐるぐる通知登録</title>
 </head>
 <body>
-  <h1>ぐるぐるのはみがきルーム</h1>
-  <img id="guruImage" src="guru_start.png" alt="ぐるぐる" />
-  <div id="timerDisplay">03:00</div>
-  <button onclick="startTimer()">歯みがきをはじめる</button>
-  <div id="quote">……きょうも、やるの……？</div>
-  <br><br>
-  <label for="notifyTime">通知時間：</label>
-  <input type="time" id="notifyTime" />
-  <button onclick="setNotifyTime()">通知を設定する</button>
-  <br><br>
-  <button onclick="toggleBGM()">BGM オン／オフ</button>
-  <audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
-  <audio id="stampSound"><source src="stamp_sound.mp3" type="audio/mpeg"></audio>
-  
-  <h2>カレンダー</h2>
-  <div id="calendarContainer" style="display: flex; flex-wrap: wrap; max-width: 340px; margin: 0 auto;"></div>
-  <script src="script.js"></script>
+  <h1>ぐるぐる通知登録</h1>
+  <button id="subscribeButton">通知を登録する</button>
+  <p id="status"></p>
+
   <script>
+    const publicVapidKey = 'BL_8Pfu-CE-123456...（本物のキーに置換）';
+    const pushServerURL = "https://guru-push-server.onrender.com";
+
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => console.log("Service Worker registered"));
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+          document.getElementById('subscribeButton').onclick = async () => {
+            const subscription = await reg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+            });
+
+            const res = await fetch(`${pushServerURL}/subscribe`, {
+              method: "POST",
+              body: JSON.stringify(subscription),
+              headers: { "Content-Type": "application/json" }
+            });
+
+            if (res.ok) {
+              document.getElementById("status").textContent = "登録しました！";
+            } else {
+              document.getElementById("status").textContent = "登録に失敗しました。";
+            }
+          };
+        });
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const rawData = atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
     }
   </script>
 </body>
