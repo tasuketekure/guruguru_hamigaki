@@ -1,26 +1,34 @@
-function startBrushing() {
-  document.getElementById("bgm").play();
-  document.getElementById("guru").src = "guru_brushing.png";
+
+let timer;
+function startTimer() {
+  const button = document.querySelector("button");
+  button.disabled = true;
+  setTimeout(() => {
+    alert("3分経ったよ！");
+    button.disabled = false;
+  }, 180000);
 }
 
-function stopBrushing() {
-  document.getElementById("bgm").pause();
-  document.getElementById("guru").src = "guru_start.png";
+function toggleBgm() {
+  const bgm = document.getElementById("bgm");
+  if (bgm.paused) {
+    bgm.play();
+  } else {
+    bgm.pause();
+  }
 }
 
-function sendStamp() {
-  const date = document.getElementById("stampDate").value;
+function submitStamp() {
+  const date = document.getElementById("date").value;
   if (!date) {
-    alert("日付を選んでください");
+    alert("日付を選んでね");
     return;
   }
-
   fetch("https://script.google.com/macros/s/AKfycbzB9xMnBZXH-QIfrnawMtrRWYHM-MoB4Y0GeOBEpm3P1I79o0uAlg5yDuH2CYGeu4uS/exec", {
     method: "POST",
-    body: JSON.stringify({ date: date }),
-    headers: { "Content-Type": "application/json" }
+    body: new URLSearchParams({ date })
   })
   .then(res => res.text())
-  .then(txt => alert("スタンプを登録しました！"))
-  .catch(err => alert("エラー：" + err));
+  .then(text => alert("スタンプ送信完了！"))
+  .catch(err => alert("エラーが発生しました"));
 }

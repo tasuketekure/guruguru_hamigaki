@@ -1,22 +1,44 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ぐるぐるはみがき</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+    img {
+      max-width: 80vw;
+      height: auto;
+    }
+    button {
+      margin: 10px;
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+    audio {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>ぐるぐるはみがきアプリ</h1>
-  <button onclick="startBrushing()">はみがきスタート</button>
-  <button onclick="stopBrushing()">終了</button>
-  <audio id="bgm" loop>
-    <source src="bgm.mp3" type="audio/mp3">
-  </audio>
-  <img src="guru_start.png" id="guru" width="300">
-
-  <h2>ぐるぐるはみがきスタンプ</h2>
-  <input type="date" id="stampDate">
-  <button onclick="sendStamp()">スタンプを押す！</button>
-
+  <h1>ぐるぐるはみがき</h1>
+  <img id="brushImage" src="guru_brushing.png" alt="ぐるぐる歯みがき" />
+  <div>
+    <button onclick="startTimer()">タイマー開始</button>
+    <button onclick="toggleBgm()">BGMオン/オフ</button>
+  </div>
+  <div>
+    <input type="date" id="date" />
+    <button onclick="submitStamp()">スタンプを押す！</button>
+  </div>
+  <audio id="bgm" src="bgm.mp3" loop></audio>
   <script src="script.js"></script>
 </body>
 </html>
