@@ -1,1 +1,0 @@
-# guruguru_hamigaki
