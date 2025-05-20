@@ -5,7 +5,7 @@ document.getElementById("stamp-button").addEventListener("click", () => {
     return;
   }
 
-  fetch("https://tasuketekure.github.io/guruguru_hamigaki/", {
+  fetch("https://script.google.com/macros/s/AKfycbzB9xMnBZXH-QIfrnawMtrRWYHM-MoB4Y0GeOBEpm3P1I79o0uAlg5yDuH2CYGeu4uS/exec", {
     method: "POST",
     body: JSON.stringify({ date: selectedDate }),
     headers: { "Content-Type": "application/json" }
