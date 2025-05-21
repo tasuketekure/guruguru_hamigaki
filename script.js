@@ -1,104 +1,149 @@
 
-const guruImage = document.getElementById("guruImage");
-const timerDisplay = document.getElementById("timerDisplay");
-const startButton = document.getElementById("startButton");
-const quote = document.getElementById("quote");
-const bgm = document.getElementById("bgm");
-const toggleBGM = document.getElementById("toggleBGM");
-const stampSound = document.getElementById("stampSound");
-const brushingImg = "guru_brushing.png";
-const startImg = "guru_start.png";
+let timer;
+let timeLeft = 180;
 
-let playing = false;
-let timerId = null;
-let timerFinished = false;
-
-const quotes = [
-  "……おくすり飲むの、こっちが先……？","きょうも、はみがき……して、いい？","ねえ、いっしょに座ってて……優しくして……","ぐるぐるのこと、ちゃんと見てて……",
-  "ぐるぐるのこと、忘れてほしくないの……","しかたが、じっと……してるのが、いちばん……","ひとりでも、ちゃんとやってる……夢で、みた",
-  "ぴかぴかの……よぶんな気持ち、はぶいてしまいたい……","ひかりのかべ……よく見えない……","ちょっとくらい……泣いても、いいよね……？",
-  "ずっと……君といられたら……","できるよ、だいじょうぶ……きみがそばにいれば","いましょう、ずっと……離れないで……",
-  "……お耳、ふわふわしてる……","さみしいよ……ねえ……","名前……よんで……","まぶしいときは、目をとじていい……",
-  "かべと話すのは、ぐるぐるだけじゃない……","大丈夫じゃないことも、大丈夫にしてあげる……","「だいじょうぶ？」って、言ってほしかった……",
-  "ぬいぐるみたち、ぜんぶ、こころを持ってる……","ぐるぐるの、ことばにならないきもち……","そっと、隠してるつもり……だったのに……",
-  "おふとんのなか、いっしょにいて……","……寒くなってきたね、手、つないでて","泣かない日があってもいいのに……",
-  "うまくわらえるように、なるのかな……","あしたも、ここにいてくれる……？","夢の中では、ちゃんと笑えてたんだよ","だいすきって、いってほしいだけ……"
-];
-
-function showQuote() {
-  const today = new Date().getDate();
-  const line = quotes[(today - 1) % quotes.length];
-  quote.textContent = "ぐるぐる「" + line + "」";
-}
+const dayIndex = new Date().getDate() % 30;
+const quotes = [["……きょうも、やる……の……？", "……あわ、たくさん……", "……もうすこし、がんばる……", "……ぴかぴか、だね……"], ["……また……はみがき、か……", "……うえの歯、しっかり……", "……したの歯も……", "……すっきり、した……？"], ["……くちのなか……変な感じ……", "……がんばってる、ね……", "……あと1分、えらい……", "……きょうも、えらかった……"], ["……この音……ちょっときらい……", "……うえの奥……わすれないで……", "……あとちょっと……", "……うん、いい感じ……"], ["……なにか忘れてない……？", "……奥歯、むずかしいね……", "……あとすこし……ふぅ……", "……おつかれさま……"], ["……きょうはちゃんと……", "……ていねいに、ゆっくり……", "……急がなくていいよ……", "……うん、ばっちり……"], ["……むしば……やだな……", "……ぜったい防ぐ……", "……ねばってる……", "……がんばった、よね……？"], ["……ぼくも、いっしょに……", "……しゃかしゃか……", "……あとすこし、ファイト……", "……えへへ……"], ["……また、あしたも……", "……えらい……えらいよ……", "……あとちょっとだけ……", "……すてきな歯……"], ["……ここだけの話……歯ブラシすき……", "……ごしごし……", "……泡の匂い……好きかも……", "……ぐるぐるも、がんばったよ……"], ["……なんで……毎日なの……", "……でも、ぼくの歯だし……", "……放っておいたら、だめ……", "……ちゃんと磨けた、よ……"], ["……歯ブラシ、ぬるぬる……", "……泡が、苦い……", "……あと1分、だけ……", "……うがい、したい……"], ["……眠い……でも……", "……この時間、すき……", "……ちょっと、あったかい……", "……寝る前に、できた……"], ["……歯が……ちゃんとある……", "……虫歯、消えてほしい……", "……あとすこし……", "……なんか、まし……"], ["……だれも見てないけど……", "……自分のため……", "……それだけで……", "……えらい、ぼく……"], ["……さぼろうかと、思った……", "……でも、こうして……", "……もうやってる……", "……よくやった……"], ["……冷たい水……", "……しゃかしゃか……", "……鏡、見なくていい……", "……でも、きれい……"], ["……ぼくの歯は……", "……少し変かも……", "……でも、大事……", "……ずっと、使う……"], ["……えらい、って言って……", "……だれか……", "……見てなくても……", "……ありがとう、ぼく……"], ["……歯磨き、ルーティン……", "……習慣って……", "……あったかい……", "……きょうも、生きた……"], ["……あさっても、やるよ……", "……毎日は、続いてる……", "……きょうは、きょう……", "……また、あした……"], ["……おくすりみたい……", "……でもちょっと……", "……苦手……", "……でも、できた……"], ["……きらいだけど……", "……終わったら……", "……安心する……", "……そういうの、ある……"], ["……ぐるぐるしてる……", "……泡も、ぐるぐる……", "……ぼくの名前……", "……きれいになった……"], ["……忘れかけてた……", "……毎日って……", "……いつか終わるのかな……", "……でも、今日も……"], ["……無心で磨く……", "……無音が……", "……響いてる……", "……でも、生きてる……"], ["……呼吸と……", "……歯の音と……", "……泡のリズム……", "……うつくしい……"], ["……小さな習慣……", "……大きな意味……", "……たぶん……", "……未来の自分へ……"], ["……ほんとに、29日目……", "……ここまで続いた……", "……すごいこと、だよ……", "……ぼく、嬉しい……"], ["……きょうで、30日……", "……ここまで……", "……つづけた……", "……ほんとに、えらい……"]][dayIndex];
 
 function startTimer() {
-  if (timerId) return;
-  let sec = 180;
-  timerFinished = false;
-  timerDisplay.textContent = "03:00";
-  guruImage.src = startImg;
-  showQuote();
-  timerId = setInterval(() => {
-    sec--;
-    const m = String(Math.floor(sec / 60)).padStart(2, '0');
-    const s = String(sec % 60).padStart(2, '0');
-    timerDisplay.textContent = `${m}:${s}`;
-    if (sec <= 0) {
-      clearInterval(timerId);
-      timerId = null;
-      timerFinished = true;
-      guruImage.src = brushingImg;
-      quote.textContent = "おつかれさま……よくがんばったね……？";
+  clearInterval(timer);
+  timeLeft = 180;
+  document.getElementById("guruImage").src = "guru_brushing.png";
+  document.getElementById("quote").innerText = quotes[0];
+  updateTimer();
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      document.getElementById("guruImage").src = "guru_start.png";
+      document.getElementById("quote").innerText = quotes[3];
+      updateStamps();
+      notify();
     }
   }, 1000);
 }
 
-function toggleMusic() {
-  if (playing) {
-    bgm.pause();
-    toggleBGM.textContent = "BGM オン／オフ";
-  } else {
-    bgm.play();
-    toggleBGM.textContent = "BGM オフ";
-  }
-  playing = !playing;
+function updateTimer() {
+  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+  const seconds = String(timeLeft % 60).padStart(2, '0');
+  document.getElementById("timerDisplay").innerText = `${minutes}:${seconds}`;
+  if (timeLeft === 120) document.getElementById("quote").innerText = quotes[1];
+  if (timeLeft === 60) document.getElementById("quote").innerText = quotes[2];
 }
 
-function submitStamp() {
-  const date = document.getElementById("stampDate").value;
-  if (!date) return alert("日付を選んでね！");
-  if (!timerFinished) return alert("タイマーが終わってからスタンプを押してね！");
-  fetch("https://script.google.com/macros/s/AKfycbzB9xMnBZXH-QIfrnawMtrRWYHM-MoB4Y0GeOBEpm3P1I79o0uAlg5yDuH2CYGeu4uS/exec", {
-    method: "POST",
-    body: JSON.stringify({ date }),
-    headers: { "Content-Type": "application/json" }
-  }).then(r => r.text()).then(() => {
-    stampSound.play();
-    alert("スタンプをおしたよ！");
+function updateStamps() {
+  let stamps = parseInt(localStorage.getItem("guruStamps") || "0");
+  stamps++;
+  localStorage.setItem("guruStamps", stamps);
+  
+  document.getElementById("stampSound").play();
+  updateCalendar();
+}
+
+function renderStamps() {
+  const stamps = parseInt(localStorage.getItem("guruStamps") || "0");
+  const container = document.getElementById("stampContainer");
+  container.innerHTML = "";
+  for (let i = 0; i < stamps; i++) {
+    const s = document.createElement("div");
+    s.classList.add("stamp");
+    container.appendChild(s);
+  }
+}
+
+
+
+function getTodayKey() {
+  const now = new Date();
+  now.setHours(now.getHours() + 9);
+  if (now.getHours() < 4) now.setDate(now.getDate() - 1);
+  return now.toISOString().split("T")[0];
+}
+
+
+function updateCalendar() {
+
+  const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
+  const current = getTodayKey();
+  
+  if (!calendar.includes(current)) {
+    calendar.push(current);
+    localStorage.setItem("guruCalendar", JSON.stringify(calendar));
+  }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const calendar = JSON.parse(localStorage.getItem("guruCalendar") || "[]");
+  const container = document.getElementById("calendarContainer");
+  container.innerHTML = "";
+
+  const today = new Date();
+  today.setHours(today.getHours() + 9);
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const lastDay = new Date(year, month + 1, 0).getDate();
+
+  for (let d = 1; d <= lastDay; d++) {
+    const dateStr = new Date(year, month, d).toISOString().split('T')[0];
+    const cell = document.createElement("div");
+    cell.style.display = "inline-block";
+    cell.style.width = "60px";
+    cell.style.height = "60px";
+    cell.style.margin = "4px";
+    cell.style.textAlign = "center";
+    cell.style.verticalAlign = "top";
+    cell.style.border = "1px solid #ccc";
+    cell.innerHTML = `<div style="font-size:12px">${d}</div>`;
+    if (calendar.includes(dateStr)) {
+      const img = document.createElement("img");
+      img.src = "stamp.png";
+      img.style.width = "40px";
+      img.style.height = "40px";
+      cell.appendChild(img);
+    }
+    container.appendChild(cell);
+  }
+}
+
+function setNotifyTime() {
+  const time = document.getElementById("notifyTime").value;
+  localStorage.setItem("notifyTime", time);
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      alert("通知を設定しました");
+    }
   });
 }
 
-function toggleNotification() {
-  const btn = document.getElementById("notifyToggle");
-  const current = localStorage.getItem("guru_notify") === "on";
-  if (current) {
-    localStorage.setItem("guru_notify", "off");
-    btn.textContent = "通知: オフ";
-  } else {
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
-        localStorage.setItem("guru_notify", "on");
-        btn.textContent = "通知: オン";
-      } else {
-        alert("通知が許可されませんでした");
-      }
+function notify() {
+  if (Notification.permission === "granted") {
+    new Notification("ぐるぐる", {
+      body: "……きょうも、はみがき……わすれてない……？",
+      icon: "guruguru_icon.png"
     });
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("notifyToggle");
-  const current = localStorage.getItem("guru_notify");
-  btn.textContent = current === "on" ? "通知: オン" : "通知: オフ";
-  timerFinished = false;
-});
+function checkNotifyTime() {
+  const now = new Date();
+  const [h, m] = (localStorage.getItem("notifyTime") || "").split(":");
+  if (!h) return;
+  if (parseInt(h) === now.getHours() && parseInt(m) === now.getMinutes()) {
+    notify();
+  }
+}
+
+function toggleBGM() {
+  const bgm = document.getElementById("bgm");
+  if (bgm.paused) {
+    bgm.play().catch(e => console.log("Audio play blocked:", e));
+  } else {
+    bgm.pause();
+  }
+}
+
+setInterval(checkNotifyTime, 60000);
+
+renderCalendar();
