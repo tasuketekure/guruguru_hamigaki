@@ -1,3 +1,4 @@
+let timerFinished = false;
 
 let timer;
 let timeLeft = 180;
